@@ -20,6 +20,7 @@
  */
 
 import {
+  Component,
   Suspense,
   lazy,
   useCallback,
@@ -117,6 +118,40 @@ function SandboxLoading() {
 }
 
 /**
+ * 错误边界 —— 捕获子组件渲染时的运行时错误,
+ * 防止靶场组件崩溃导致整个页面白屏。
+ */
+class SandboxErrorBoundary extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false, error: null }
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error }
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="sx-sandbox__error">
+          <h4>⚠️ 靶场组件加载失败</h4>
+          <pre className="sx-sandbox__error-detail">
+            {this.state.error?.message || '未知错误'}
+          </pre>
+          <p className="sx-sandbox__error-hint">
+            该靶场故意保留了若干 React / ESLint 报错,等待贡献者修复。
+            <br />
+            你可以先关闭靶场,修复代码后再重新打开。
+          </p>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
+/**
  * 用 dynamic import 异步加载的"靶场实操组件"包装
  * 配合 React.lazy + Suspense 使用
  *
@@ -138,9 +173,11 @@ function SandboxTargetLoader({ sandboxId }) {
     )
   }
   return (
-    <Suspense fallback={<SandboxLoading />}>
-      <LazyComp />
-    </Suspense>
+    <SandboxErrorBoundary>
+      <Suspense fallback={<SandboxLoading />}>
+        <LazyComp />
+      </Suspense>
+    </SandboxErrorBoundary>
   )
 }
 

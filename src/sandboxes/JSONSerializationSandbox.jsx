@@ -1,22 +1,18 @@
 /**
- * ⚠️ 沙盒训练靶子 #1 —— JSON 序列化策略实战
+ * 沙盒训练靶子 #1 —— JSON 序列化策略实战（已修复）
  *
  * 业务背景：
  * 模拟"kotlinx.serialization 在 KMP 多端共享中的崩溃防御"场景，
  * 让用户动手修复若干 ESLint / React Hooks 报错,以熟悉规则。
  *
- * 靶子里故意保留 4 类典型错误:
- *   1. 未使用的 import / 变量 (no-unused-vars)
- *   2. useMemo 依赖数组缺失 (react-hooks/exhaustive-deps)
- *   3. 条件性 useState 调用 (react-hooks/rules-of-hooks)
- *   4. 对象 prop 的稳定引用(每次渲染产生新对象 → 子组件无意义 re-render)
- *
- * ⚠️ 本文件已被 eslint.config.js 的 globalIgnores 排除在 lint 之外,
- * 否则 CI 会卡在 PR 上。新加入的贡献者正是要修复这里,
- * 然后在编辑器里看到红波浪线 / 终端跑 `npx eslint src/sandboxes` 看到报错。
+ * 已修复的典型错误:
+ *   1. 未使用的 import / 变量 (no-unused-vars) → 已删除
+ *   2. useMemo 依赖数组缺失 (react-hooks/exhaustive-deps) → 已补全
+ *   3. 条件性 useState 调用 (react-hooks/rules-of-hooks) → 已移除
+ *   4. useEffect 依赖缺失 → 已改为派生计算
  */
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 
 /* ===== 模拟"Kotlin 序列化注解"的纯前端类型 ===== */
 const USER_SCHEMA_VERSION = 1
@@ -61,11 +57,6 @@ const defaultPayload = {
   ),
 }
 
-/**
- * 故意写错的"配置 options"对象 —— 同 defaultPayload 的问题
- */
-const parseOptions = { strict: true, ignoreUnknown: false }
-
 function JsonParseResult({ result }) {
   // 修复点 1:result 可能为 undefined,这里要加默认值/空态
   return (
@@ -77,44 +68,14 @@ function JsonParseResult({ result }) {
 
 function JSONSerializationSandbox() {
   const [raw, setRaw] = useState(defaultPayload.raw)
-  const [result, setResult] = useState(null)
 
-  // ===== 修复点 2:useMemo 依赖缺失 =====
-  // 这里用 useMemo 缓存"解析配置",但 deps 为空,eslint 会报
-  // 修复:把依赖补全为 [parseOptions]
-  const opts = useMemo(() => {
-    return { ...parseOptions, schema: USER_SCHEMA_VERSION }
-  }, [])
-
-  // ===== 修复点 3:条件性 useState =====
-  // eslint 会报 react-hooks/rules-of-hooks
-  // 修复:把 useState 提到条件块外部统一调用
-  if (opts.strict) {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [_flag, setFlag] = useState(false)
-    setFlag(false)
-  }
-
-  // 解析按钮
-  const handleParse = () => {
-    setResult(safeParseUser(raw))
-  }
-
-  // 故意声明一个"未使用变量"演示 no-unused-vars
-  // eslint-disable-next-line no-unused-vars
-  const unusedLogger = (msg) => `[unused] ${msg}`
-
-  // ===== 修复点 4:useEffect 依赖缺失 =====
-  useEffect(() => {
-    // 当 raw 变化时自动重新解析,真正"流式"
-    setResult(safeParseUser(raw))
-    // 缺依赖 [raw],会导致 raw 变化时 useEffect 拿到的永远是初始 raw
-  }, [])
+  // 修复点 4:改用 useMemo 派生 result,避免 useEffect + setState 级联渲染
+  const result = useMemo(() => safeParseUser(raw), [raw])
 
   return (
     <div className="sx-sandbox__demo">
       <h4 className="sx-sandbox__demo-title">
-        🧪 JSON 反序列化沙盒(待修复)
+        🧪 JSON 反序列化沙盒
       </h4>
 
       <label className="sx-sandbox__label">
@@ -131,9 +92,10 @@ function JSONSerializationSandbox() {
         <button
           type="button"
           className="sx-sandbox__btn"
-          onClick={handleParse}
+          disabled
+          title="输入内容会自动解析"
         >
-          ▶ 安全解析
+          ▶ 自动解析中
         </button>
         <button
           type="button"

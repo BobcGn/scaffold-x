@@ -338,6 +338,44 @@
   overflow: auto;
 }
 
+/* ---------- ErrorBoundary 错误态 ---------- */
+.sx-sandbox__error {
+  padding: 24px;
+  margin: 0;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--sx-radius);
+  color: #fca5a5;
+}
+
+.sx-sandbox__error h4 {
+  margin: 0 0 12px;
+  font-size: 16px;
+  color: #f87171;
+}
+
+.sx-sandbox__error-detail {
+  padding: 12px 14px;
+  background: #0a0a0f;
+  color: #d6deeb;
+  border: 1px solid var(--sx-border);
+  border-radius: 6px;
+  font-family: var(--sx-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 160px;
+  overflow: auto;
+}
+
+.sx-sandbox__error-hint {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--sx-text-soft);
+  line-height: 1.6;
+}
+
 /* ---------- 响应式:移动端上下堆叠 ---------- */
 @media (max-width: 900px) {
   .sx-sandbox {
