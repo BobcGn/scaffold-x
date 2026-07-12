@@ -16,6 +16,9 @@
  */
 
 import jsonSerializationInstruction from './instructions/json-serialization.md?raw'
+import stateManagementInstruction from './instructions/state-management.md?raw'
+import asyncDataInstruction from './instructions/async-data.md?raw'
+import formValidationInstruction from './instructions/form-validation.md?raw'
 
 // 沙盒组件由 App.jsx 异步 import(lazy),本文件不直接 import
 // 避免 lint 范围之外的报错污染主包
@@ -46,6 +49,42 @@ export const SANDBOX_REGISTRY = {
     meta: [
       { label: '难度', value: '⭐⭐☆' },
       { label: '预计', value: '15 ~ 30 min' },
+    ],
+  },
+  'state-management': {
+    id: 'state-management',
+    title: 'React 状态管理实战',
+    tag: 'State',
+    filePath: 'src/sandboxes/StateManagerSandbox.jsx',
+    instructionMd: stateManagementInstruction,
+    loadComponent: () => import('./StateManagerSandbox.jsx'),
+    meta: [
+      { label: '难度', value: '⭐⭐☆' },
+      { label: '预计', value: '20 ~ 30 min' },
+    ],
+  },
+  'async-data': {
+    id: 'async-data',
+    title: '异步数据处理实战',
+    tag: 'Async',
+    filePath: 'src/sandboxes/AsyncDataSandbox.jsx',
+    instructionMd: asyncDataInstruction,
+    loadComponent: () => import('./AsyncDataSandbox.jsx'),
+    meta: [
+      { label: '难度', value: '⭐⭐☆' },
+      { label: '预计', value: '20 ~ 30 min' },
+    ],
+  },
+  'form-validation': {
+    id: 'form-validation',
+    title: '表单验证实战',
+    tag: 'Form',
+    filePath: 'src/sandboxes/FormValidationSandbox.jsx',
+    instructionMd: formValidationInstruction,
+    loadComponent: () => import('./FormValidationSandbox.jsx'),
+    meta: [
+      { label: '难度', value: '⭐☆☆' },
+      { label: '预计', value: '15 ~ 25 min' },
     ],
   },
 }

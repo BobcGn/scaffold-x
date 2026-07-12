@@ -57,6 +57,39 @@ const FUNNEL_DATA = [
               label: '打开靶场',
             },
           },
+          {
+            id: 'state-management',
+            tag: 'State',
+            title: 'React 状态管理实战',
+            desc: '练习 useState / useReducer / useContext,修复直接 mutation 和 Context 性能问题。',
+            cta: {
+              kind: 'sandbox',
+              sandboxId: 'state-management',
+              label: '打开靶场',
+            },
+          },
+          {
+            id: 'async-data',
+            tag: 'Async',
+            title: '异步数据处理实战',
+            desc: '练习 async/await、AbortController、竞态条件处理和内存泄漏防护。',
+            cta: {
+              kind: 'sandbox',
+              sandboxId: 'async-data',
+              label: '打开靶场',
+            },
+          },
+          {
+            id: 'form-validation',
+            tag: 'Form',
+            title: '表单验证实战',
+            desc: '练习受控组件、表单验证逻辑和密码强度检测。',
+            cta: {
+              kind: 'sandbox',
+              sandboxId: 'form-validation',
+              label: '打开靶场',
+            },
+          },
         ],
       },
       {
