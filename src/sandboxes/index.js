@@ -11,6 +11,7 @@
  *   - tag          分类小标
  *   - filePath     靶子文件相对路径(展示在 SandboxViewer 顶部 mono 条)
  *   - instructionMd 任务说明(由 ?raw 加载)
+ *   - sourceCode   源代码(由 ?raw 加载,用于代码编辑器)
  *   - Component    实操组件(本身),注意:Component 不能在 lint 范围内
  *   - meta         自由扩展 meta:难度/预计耗时等
  */
@@ -19,6 +20,12 @@ import jsonSerializationInstruction from './instructions/json-serialization.md?r
 import stateManagementInstruction from './instructions/state-management.md?raw'
 import asyncDataInstruction from './instructions/async-data.md?raw'
 import formValidationInstruction from './instructions/form-validation.md?raw'
+
+// 源代码由 ?raw 导入,用于代码编辑器
+import jsonSerializationSource from './JSONSerializationSandbox.jsx?raw'
+import stateManagementSource from './StateManagerSandbox.jsx?raw'
+import asyncDataSource from './AsyncDataSandbox.jsx?raw'
+import formValidationSource from './FormValidationSandbox.jsx?raw'
 
 // 沙盒组件由 App.jsx 异步 import(lazy),本文件不直接 import
 // 避免 lint 范围之外的报错污染主包
@@ -29,6 +36,7 @@ import formValidationInstruction from './instructions/form-validation.md?raw'
  * @property {string}   tag
  * @property {string}   filePath
  * @property {string}   instructionMd
+ * @property {string}   sourceCode
  * @property {() => Promise<{default: React.ComponentType}>} loadComponent
  * @property {Array<{label: string, value: string}>} meta
  */
@@ -45,6 +53,7 @@ export const SANDBOX_REGISTRY = {
     tag: 'Serialization',
     filePath: 'src/sandboxes/JSONSerializationSandbox.jsx',
     instructionMd: jsonSerializationInstruction,
+    sourceCode: jsonSerializationSource,
     loadComponent: () => import('./JSONSerializationSandbox.jsx'),
     meta: [
       { label: '难度', value: '⭐⭐☆' },
@@ -57,6 +66,7 @@ export const SANDBOX_REGISTRY = {
     tag: 'State',
     filePath: 'src/sandboxes/StateManagerSandbox.jsx',
     instructionMd: stateManagementInstruction,
+    sourceCode: stateManagementSource,
     loadComponent: () => import('./StateManagerSandbox.jsx'),
     meta: [
       { label: '难度', value: '⭐⭐☆' },
@@ -69,6 +79,7 @@ export const SANDBOX_REGISTRY = {
     tag: 'Async',
     filePath: 'src/sandboxes/AsyncDataSandbox.jsx',
     instructionMd: asyncDataInstruction,
+    sourceCode: asyncDataSource,
     loadComponent: () => import('./AsyncDataSandbox.jsx'),
     meta: [
       { label: '难度', value: '⭐⭐☆' },
@@ -81,6 +92,7 @@ export const SANDBOX_REGISTRY = {
     tag: 'Form',
     filePath: 'src/sandboxes/FormValidationSandbox.jsx',
     instructionMd: formValidationInstruction,
+    sourceCode: formValidationSource,
     loadComponent: () => import('./FormValidationSandbox.jsx'),
     meta: [
       { label: '难度', value: '⭐☆☆' },

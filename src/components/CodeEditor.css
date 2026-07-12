@@ -1,0 +1,136 @@
+/* =================================================================
+ *  CodeEditor 代码编辑器样式
+ *  - 暗色主题，极客风
+ *  - 支持行号、语法高亮提示
+ * ================================================================= */
+
+.sx-code-editor {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--sx-border);
+  border-radius: var(--sx-radius);
+  overflow: hidden;
+  background: #0a0a0f;
+}
+
+/* ---------- 顶部工具栏 ---------- */
+.sx-code-editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--sx-bg-elev);
+  border-bottom: 1px solid var(--sx-border);
+  font-family: var(--sx-mono);
+  font-size: 12px;
+}
+
+.sx-code-editor__file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sx-code-editor__filename {
+  color: var(--sx-text-h);
+  font-weight: 500;
+}
+
+.sx-code-editor__language {
+  color: var(--sx-cyan);
+  background: var(--sx-cyan-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.sx-code-editor__cursor {
+  color: var(--sx-text-soft);
+}
+
+/* ---------- 代码编辑区 ---------- */
+.sx-code-editor__container {
+  display: flex;
+  flex: 1;
+  overflow: auto;
+  max-height: 500px;
+}
+
+/* 行号 */
+.sx-code-editor__line-numbers {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 0;
+  background: rgba(255, 255, 255, 0.02);
+  border-right: 1px solid var(--sx-border);
+  user-select: none;
+  min-width: 40px;
+}
+
+.sx-code-editor__line-number {
+  padding: 0 10px;
+  text-align: right;
+  color: var(--sx-text-soft);
+  font-family: var(--sx-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  opacity: 0.6;
+}
+
+/* 代码输入框 */
+.sx-code-editor__textarea {
+  flex: 1;
+  padding: 12px 16px;
+  background: transparent;
+  color: #d6deeb;
+  border: none;
+  outline: none;
+  font-family: var(--sx-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  tab-size: 2;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.sx-code-editor__textarea::placeholder {
+  color: var(--sx-text-soft);
+  opacity: 0.5;
+}
+
+.sx-code-editor__textarea:focus {
+  outline: none;
+}
+
+.sx-code-editor__textarea:read-only {
+  cursor: default;
+  opacity: 0.8;
+}
+
+/* ---------- 底部状态栏 ---------- */
+.sx-code-editor__footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 12px;
+  background: var(--sx-bg-elev);
+  border-top: 1px solid var(--sx-border);
+  font-family: var(--sx-mono);
+  font-size: 11px;
+  color: var(--sx-text-soft);
+}
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  .sx-code-editor__header {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+  }
+
+  .sx-code-editor__container {
+    max-height: 300px;
+  }
+}

@@ -376,6 +376,134 @@
   line-height: 1.6;
 }
 
+/* ---------- 代码编辑器区域 ---------- */
+.sx-sandbox__editor-section {
+  margin-top: 20px;
+  border: 1px solid var(--sx-border);
+  border-radius: var(--sx-radius-lg);
+  overflow: hidden;
+}
+
+.sx-sandbox__editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: var(--sx-bg-elev);
+  border-bottom: 1px solid var(--sx-border);
+}
+
+.sx-sandbox__editor-title {
+  font-family: var(--sx-mono);
+  font-size: 14px;
+  color: var(--sx-text-h);
+  font-weight: 500;
+}
+
+.sx-sandbox__editor-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 切换编辑器按钮 */
+.sx-sandbox__toggle-editor {
+  padding: 6px 12px;
+  background: transparent;
+  color: var(--sx-text-soft);
+  border: 1px solid var(--sx-border-strong);
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: var(--sx-mono);
+  transition: all 160ms ease;
+}
+
+.sx-sandbox__toggle-editor:hover {
+  color: var(--sx-accent-strong);
+  border-color: var(--sx-accent-border);
+}
+
+.sx-sandbox__toggle-editor.is-active {
+  background: var(--sx-accent-bg);
+  color: var(--sx-accent-strong);
+  border-color: var(--sx-accent);
+}
+
+/* ---------- 提交区域 ---------- */
+.sx-sandbox__commit-section {
+  padding: 16px;
+  background: var(--sx-bg-soft);
+  border-top: 1px solid var(--sx-border);
+}
+
+.sx-sandbox__commit-input-row {
+  display: flex;
+  gap: 10px;
+}
+
+.sx-sandbox__commit-input {
+  flex: 1;
+  padding: 10px 14px;
+  background: #0a0a0f;
+  color: var(--sx-text-h);
+  border: 1px solid var(--sx-border-strong);
+  border-radius: 6px;
+  font-family: var(--sx-mono);
+  font-size: 13px;
+}
+
+.sx-sandbox__commit-input:focus {
+  outline: 2px solid var(--sx-accent);
+  outline-offset: 1px;
+  border-color: var(--sx-accent);
+}
+
+.sx-sandbox__commit-input::placeholder {
+  color: var(--sx-text-soft);
+  opacity: 0.6;
+}
+
+/* 按钮样式 */
+.sx-sandbox__btn--primary {
+  background: var(--sx-accent);
+  color: #0a0a0f;
+}
+
+.sx-sandbox__btn--primary:hover {
+  background: var(--sx-accent-strong);
+}
+
+.sx-sandbox__btn--primary:disabled {
+  background: var(--sx-border-strong);
+  color: var(--sx-text-soft);
+  cursor: not-allowed;
+}
+
+.sx-sandbox__commit-success {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 6px;
+  color: #4ade80;
+  font-size: 13px;
+}
+
+.sx-sandbox__commit-error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 6px;
+  color: #f87171;
+  font-size: 13px;
+}
+
+.sx-sandbox__commit-hint {
+  margin: 10px 0 0;
+  font-size: 12px;
+  color: var(--sx-text-soft);
+}
+
 /* ---------- 响应式:移动端上下堆叠 ---------- */
 @media (max-width: 900px) {
   .sx-sandbox {

@@ -278,6 +278,108 @@ function App() {
   /** 关闭靶场 */
   const handleCloseSandbox = useCallback(() => setActiveSandboxId(null), [])
 
+  /** 使用 GitHub Token 提交代码 */
+  const handleCommitWithToken = useCallback(async (token, message, sandbox) => {
+    const GITHUB_API = 'https://api.github.com'
+    const owner = 'BobcGn'
+    const repo = 'scaffold-x'
+    const branch = 'main'
+    const filePath = sandbox.filePath
+
+    // 1. 获取当前文件的 SHA(用于更新文件)
+    const fileResponse = await fetch(
+      `${GITHUB_API}/repos/${owner}/${repo}/contents/${filePath}?ref=${branch}`,
+      {
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+        },
+      }
+    )
+
+    if (!fileResponse.ok) {
+      if (fileResponse.status === 401) {
+        throw new Error('GitHub Token 无效,请重新设置')
+      }
+      throw new Error(`获取文件失败: ${fileResponse.statusText}`)
+    }
+
+    const fileData = await fileResponse.json()
+    const currentSha = fileData.sha
+
+    // 2. 创建新分支
+    const branchName = `sandbox-fix/${sandbox.id}-${Date.now()}`
+    const createBranchResponse = await fetch(
+      `${GITHUB_API}/repos/${owner}/${repo}/git/refs`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ref: `refs/heads/${branchName}`,
+          sha: currentSha,
+        }),
+      }
+    )
+
+    if (!createBranchResponse.ok) {
+      throw new Error(`创建分支失败: ${createBranchResponse.statusText}`)
+    }
+
+    // 3. 更新文件
+    const updateFileResponse = await fetch(
+      `${GITHUB_API}/repos/${owner}/${repo}/contents/${filePath}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message,
+          content: btoa(unescape(encodeURIComponent(sandbox.sourceCode))),
+          branch: branchName,
+          sha: currentSha,
+        }),
+      }
+    )
+
+    if (!updateFileResponse.ok) {
+      throw new Error(`更新文件失败: ${updateFileResponse.statusText}`)
+    }
+
+    // 4. 创建 Pull Request
+    const prResponse = await fetch(
+      `${GITHUB_API}/repos/${owner}/${repo}/pulls`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `token ${token}`,
+          Accept: 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: message,
+          body: `## 靶场修复\n\n- 靶场: ${sandbox.title}\n- 文件: \`${filePath}\`\n\n---\n\n*此 PR 由 Scaffold-X 靶场自动生成*`,
+          head: branchName,
+          base: branch,
+        }),
+      }
+    )
+
+    if (!prResponse.ok) {
+      const errorData = await prResponse.json()
+      throw new Error(errorData.message || `创建 PR 失败: ${prResponse.statusText}`)
+    }
+
+    const prData = await prResponse.json()
+    return prData.html_url
+  }, [])
+
   // 当前激活的文档 / 靶场对象
   const activeDoc = DOC_LIBRARY.find((d) => d.id === activeDocId) || null
   const activeSandbox = activeSandboxId ? getSandbox(activeSandboxId) : null
@@ -304,11 +406,34 @@ function App() {
                 tag={activeSandbox.tag}
                 filePath={activeSandbox.filePath}
                 instructionMd={activeSandbox.instructionMd}
+                sourceCode={activeSandbox.sourceCode}
                 TargetComponent={() => (
                   <SandboxTargetLoader sandboxId={activeSandbox.id} />
                 )}
                 meta={activeSandbox.meta}
                 onClose={handleCloseSandbox}
+                onCodeChange={() => {
+                  // 代码变更回调(暂未使用)
+                }}
+                onCommit={async (message) => {
+                  // 创建 GitHub 提交
+                  // 这里需要用户输入 GitHub Token
+                  const token = localStorage.getItem('github_token')
+                  if (!token) {
+                    // 弹出输入框让用户输入 token
+                    const inputToken = prompt(
+                      '请输入你的 GitHub Personal Access Token:\n' +
+                      '需要 repo 权限来创建 Pull Request\n' +
+                      '生成地址: https://github.com/settings/tokens/new?scopes=repo&description=scaffold-x'
+                    )
+                    if (!inputToken) {
+                      throw new Error('需要 GitHub Token 才能提交代码')
+                    }
+                    localStorage.setItem('github_token', inputToken)
+                    return handleCommitWithToken(inputToken, message, activeSandbox)
+                  }
+                  return handleCommitWithToken(token, message, activeSandbox)
+                }}
               />
             </div>
           )}
