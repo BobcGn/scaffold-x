@@ -1,0 +1,46 @@
+# Scaffold-X CI Pipeline
+# 职责：任何 PR / push 都会经过 lint + build，失败即爆红 → 阻止合并
+# 文档：docs/CI-CD-GUIDE.md
+name: CI
+
+# 触发条件：所有 PR 与 main 分支 push
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# 同一分支的新提交自动取消旧运行，节省 CI 资源
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-build:
+    name: Lint & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # 拉取仓库代码
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 锁定 Node 版本为 22.x LTS，与本地/CONTRIBUTING.md 保持一致
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 使用 lockfile 安装依赖，保证 CI 与本地一致
+      - name: Install dependencies
+        run: npm ci
+
+      # 物理拦截第一道：ESLint 任意 error 即失败
+      - name: Run ESLint
+        run: npm run lint
+
+      # 物理拦截第二道：Vite 构建必须成功
+      - name: Build
+        run: npm run build

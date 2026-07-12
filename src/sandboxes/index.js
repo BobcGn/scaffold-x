@@ -1,0 +1,61 @@
+/**
+ * 靶场注册表 —— 把"任务说明 + 实操组件"打包成可挂载的单元
+ *
+ * 与 funnel.js 的 L3 节点通过 `sandboxId` 字段关联:
+ *   funnel 中某 L3.cta.kind === 'sandbox' 且 cta.sandboxId === 'json-serialization'
+ *   → 在 App 中查找 SANDBOX_REGISTRY[sandboxId],挂载到 SandboxViewer
+ *
+ * 字段说明:
+ *   - id           唯一标识
+ *   - title        靶场名
+ *   - tag          分类小标
+ *   - filePath     靶子文件相对路径(展示在 SandboxViewer 顶部 mono 条)
+ *   - instructionMd 任务说明(由 ?raw 加载)
+ *   - Component    实操组件(本身),注意:Component 不能在 lint 范围内
+ *   - meta         自由扩展 meta:难度/预计耗时等
+ */
+
+import jsonSerializationInstruction from './instructions/json-serialization.md?raw'
+
+// 沙盒组件由 App.jsx 异步 import(lazy),本文件不直接 import
+// 避免 lint 范围之外的报错污染主包
+/**
+ * @typedef {Object} SandboxEntry
+ * @property {string}   id
+ * @property {string}   title
+ * @property {string}   tag
+ * @property {string}   filePath
+ * @property {string}   instructionMd
+ * @property {() => Promise<{default: React.ComponentType}>} loadComponent
+ * @property {Array<{label: string, value: string}>} meta
+ */
+
+/**
+ * 集中维护所有可挂载的靶场。
+ * loadComponent 必须是 dynamic import,让 webpack/vite 自动 code-split,
+ * 也让 sandboxes 目录的 lint 错误不阻塞主包。
+ */
+export const SANDBOX_REGISTRY = {
+  'json-serialization': {
+    id: 'json-serialization',
+    title: 'JSON 序列化策略实战',
+    tag: 'Serialization',
+    filePath: 'src/sandboxes/JSONSerializationSandbox.jsx',
+    instructionMd: jsonSerializationInstruction,
+    loadComponent: () => import('./JSONSerializationSandbox.jsx'),
+    meta: [
+      { label: '难度', value: '⭐⭐☆' },
+      { label: '预计', value: '15 ~ 30 min' },
+    ],
+  },
+}
+
+/**
+ * 按 id 取出靶场条目,未命中返回 null
+ *
+ * @param {string} id
+ * @returns {object|null}
+ */
+export function getSandbox(id) {
+  return SANDBOX_REGISTRY[id] || null
+}

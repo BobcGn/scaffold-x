@@ -1,0 +1,304 @@
+/* =================================================================
+ *  MarkdownViewer 暗色极客风样式
+ *  与 index.css 的 CSS 变量(--sx-*)保持一致,无需额外主题切换
+ * ================================================================= */
+
+.sx-md {
+  /* 文章整体容器:卡片化 + 边框 + 暗色背景 */
+  background: var(--sx-bg-soft);
+  border: 1px solid var(--sx-border);
+  border-radius: var(--sx-radius-lg);
+  padding: 40px 48px 48px;
+  color: var(--sx-text);
+  font-size: 15.5px;
+  line-height: 1.75;
+  /* 阴影:与 .sx-target / .sx-choice 同一族,保持一致 */
+  box-shadow: var(--sx-shadow-1);
+}
+
+@media (max-width: 768px) {
+  .sx-md {
+    padding: 24px 20px 28px;
+    border-radius: var(--sx-radius);
+  }
+}
+
+/* ---------- 头部 ---------- */
+.sx-md__header {
+  margin: 0 0 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--sx-border);
+}
+
+.sx-md__title {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--sx-text-h);
+  margin: 0 0 6px;
+}
+
+.sx-md__subtitle {
+  font-family: var(--sx-mono);
+  font-size: 13px;
+  color: var(--sx-text-soft);
+  margin: 0 0 14px;
+}
+
+.sx-md__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sx-mono);
+  font-size: 12px;
+  color: var(--sx-text-soft);
+  flex-wrap: wrap;
+}
+
+.sx-md__meta em {
+  font-style: normal;
+  color: var(--sx-accent-strong);
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.sx-md__meta-dot {
+  color: var(--sx-border-strong);
+}
+
+/* ---------- 正文基础排版 ---------- */
+.sx-md__body > *:first-child {
+  margin-top: 0;
+}
+.sx-md__body > *:last-child {
+  margin-bottom: 0;
+}
+
+.sx-md__body h1,
+.sx-md__body h2,
+.sx-md__body h3,
+.sx-md__body h4 {
+  color: var(--sx-text-h);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 1.8em 0 0.6em;
+  line-height: 1.3;
+}
+
+.sx-md__body h1 {
+  font-size: 28px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--sx-border);
+}
+.sx-md__body h2 {
+  font-size: 22px;
+}
+.sx-md__body h3 {
+  font-size: 18px;
+}
+.sx-md__body h4 {
+  font-size: 16px;
+  color: var(--sx-accent-strong);
+}
+
+.sx-md__body p {
+  margin: 0 0 14px;
+  color: var(--sx-text);
+}
+
+.sx-md__body strong {
+  color: var(--sx-text-h);
+  font-weight: 600;
+}
+
+.sx-md__body em {
+  color: var(--sx-accent-strong);
+  font-style: italic;
+}
+
+.sx-md__body a {
+  color: var(--sx-accent-strong);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--sx-accent-border);
+  transition: color 160ms ease, border-color 160ms ease;
+}
+
+.sx-md__body a:hover {
+  color: var(--sx-cyan);
+  border-bottom-color: var(--sx-cyan);
+}
+
+.sx-md__body ul,
+.sx-md__body ol {
+  margin: 0 0 16px;
+  padding-left: 22px;
+}
+
+.sx-md__body li {
+  margin: 4px 0;
+}
+
+.sx-md__body li::marker {
+  color: var(--sx-accent);
+}
+
+.sx-md__body blockquote {
+  margin: 16px 0;
+  padding: 10px 16px;
+  background: var(--sx-bg-elev);
+  border-left: 3px solid var(--sx-accent);
+  border-radius: 0 var(--sx-radius-sm) var(--sx-radius-sm) 0;
+  color: var(--sx-text-soft);
+  font-style: italic;
+}
+
+.sx-md__body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+.sx-md__body hr {
+  border: 0;
+  height: 1px;
+  background: var(--sx-border);
+  margin: 28px 0;
+}
+
+.sx-md__body img {
+  max-width: 100%;
+  border-radius: var(--sx-radius-sm);
+  border: 1px solid var(--sx-border);
+}
+
+/* ---------- 内联 code ---------- */
+.sx-md__body :not(pre) > code {
+  font-family: var(--sx-mono);
+  font-size: 0.88em;
+  background: rgba(167, 139, 250, 0.12);
+  color: var(--sx-accent-strong);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid var(--sx-accent-border);
+  /* 注意:不要让 inline code 继承 pre 的块级行为 */
+  word-break: break-word;
+}
+
+/* ---------- 代码块(深色背景包裹) ---------- */
+.sx-md__body pre {
+  position: relative;
+  margin: 18px 0;
+  padding: 16px 18px;
+  background: #0d0d14; /* 比 sx-bg 更深,突出层次 */
+  border: 1px solid var(--sx-border-strong);
+  border-radius: var(--sx-radius);
+  overflow-x: auto;
+  font-family: var(--sx-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #d6deeb;
+}
+
+.sx-md__body pre::before {
+  /* 极客感小细节:左上角 3 个红黄绿圆点,模拟终端 */
+  content: '● ● ●';
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: var(--sx-border-strong);
+}
+
+.sx-md__body pre > code {
+  display: block;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+  font-size: inherit;
+  white-space: pre;
+  font-family: inherit;
+}
+
+/* ---------- 表格(GFM) ---------- */
+.sx-md__body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 18px 0;
+  font-size: 14px;
+  border: 1px solid var(--sx-border);
+  border-radius: var(--sx-radius-sm);
+  overflow: hidden;
+}
+
+.sx-md__body thead {
+  background: var(--sx-bg-elev);
+}
+
+.sx-md__body th,
+.sx-md__body td {
+  padding: 10px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--sx-border);
+  color: var(--sx-text);
+}
+
+.sx-md__body th {
+  color: var(--sx-text-h);
+  font-weight: 600;
+  font-family: var(--sx-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sx-md__body tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sx-md__body tbody tr:hover {
+  background: rgba(167, 139, 250, 0.04);
+}
+
+/* ---------- GFM 任务列表 ---------- */
+.sx-md__body input[type='checkbox'] {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--sx-border-strong);
+  border-radius: 3px;
+  background: var(--sx-bg);
+  margin-right: 6px;
+  vertical-align: middle;
+  position: relative;
+  cursor: default;
+}
+
+.sx-md__body input[type='checkbox']:checked {
+  background: var(--sx-accent);
+  border-color: var(--sx-accent);
+}
+
+.sx-md__body input[type='checkbox']:checked::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0a0a0f;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* ---------- 键盘 kbd ---------- */
+.sx-md__body kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  font-family: var(--sx-mono);
+  font-size: 12px;
+  background: var(--sx-bg-elev);
+  border: 1px solid var(--sx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  color: var(--sx-text-h);
+}
