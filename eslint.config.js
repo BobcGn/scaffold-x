@@ -19,7 +19,10 @@ export default defineConfig([
       reactRefresh.configs.vite,
     ],
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        process: 'readonly', // Node.js process 全局变量
+      },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
