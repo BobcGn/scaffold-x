@@ -15,9 +15,12 @@
  * 3. status === 'wip' 的 L1 节点在 UI 上整体置灰、不可点击，并打上 "WIP" 角标。
  * 4. L3 卡片的点击行为交给父级：父级传入 onCtaClick(cta, node)，
  *    由父级根据 cta.kind 决定打开 Sandbox / 渲染 Markdown / 走 SafeLink。
+ * 5. 第三级使用 SandboxList 数据列表视图，支持搜索、筛选、排序。
  */
 
 import { useMemo } from 'react'
+import SandboxList from './SandboxList.jsx'
+import { SANDBOX_LIST_DATA } from '../config/sandboxes.js'
 
 /**
  * 查找指定 id 的 L1 节点
@@ -77,37 +80,6 @@ function ChoiceCard({ node, level, active, disabled, onSelect }) {
       {node.desc && <span className="sx-choice__desc">{node.desc}</span>}
       {disabled && <span className="sx-choice__badge">WIP</span>}
     </button>
-  )
-}
-
-/**
- * L3 落地靶场卡片 —— 包含行动号召按钮
- *
- * @param {object}  props
- * @param {object}  props.node        L3 节点
- * @param {function} [props.onCtaClick] 点击 CTA 时的回调 (cta, node) => void
- * @returns {JSX.Element}
- */
-function TargetCard({ node, onCtaClick }) {
-  const { tag, title, desc, cta } = node
-  return (
-    <article className="sx-target">
-      {tag && <span className="sx-target__tag">{tag}</span>}
-      <h3 className="sx-target__title">{title}</h3>
-      <p className="sx-target__desc">{desc}</p>
-      {cta && (
-        <button
-          type="button"
-          className="sx-target__cta"
-          onClick={() => onCtaClick?.(cta, node)}
-        >
-          {cta.label}
-          <span className="sx-target__cta-arrow" aria-hidden="true">
-            →
-          </span>
-        </button>
-      )}
-    </article>
   )
 }
 
@@ -184,21 +156,27 @@ function FunnelSelector({ data, selection, onSelect, onReset, onCtaClick }) {
         </div>
       )}
 
-      {/* ---------- Step 3: 落地靶场 ---------- */}
+      {/* ---------- Step 3: 落地靶场（列表视图） ---------- */}
       {l2Node && (
         <div className="sx-step sx-step--enter" key={`step-l3-${l2Node.id}`}>
           <div className="sx-step__head">
             <span className="sx-step__index">03</span>
             <h2 className="sx-step__title">
-              进入 <em>{l2Node.title}</em> · 落地靶场
+              <em>{l2Node.title}</em> · 靶场列表
             </h2>
           </div>
-          <div className="sx-step__grid sx-step__grid--l3">
-            {l2Node.children.map((node) => (
-              // L3 直接以"靶场列表"形式展示，每个卡片自包含 cta，不需要选中态
-              <TargetCard key={node.id} node={node} onCtaClick={onCtaClick} />
-            ))}
-          </div>
+          <SandboxList
+            data={SANDBOX_LIST_DATA}
+            onSelect={(sandbox) => {
+              if (sandbox.sandboxId) {
+                onCtaClick?.({
+                  kind: 'sandbox',
+                  sandboxId: sandbox.sandboxId,
+                  label: '打开靶场',
+                })
+              }
+            }}
+          />
         </div>
       )}
 
