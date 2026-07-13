@@ -1,6 +1,6 @@
 # 🎯 任务:表单验证实战
 
-> 靶场文件:`src/sandboxes/FormValidationSandbox.jsx`
+> 靶场文件:`src/sandboxes/react-patterns/FormValidationSandbox.jsx`
 > 预计耗时:15 ~ 25 分钟 · 难度:⭐☆☆
 
 ## 背景
@@ -33,7 +33,7 @@
 
 ## 完成判据
 
-- [ ] `npx eslint --no-ignore src/sandboxes/FormValidationSandbox.jsx` **0 error**
+- [ ] `npx eslint --no-ignore src/sandboxes/react-patterns/FormValidationSandbox.jsx` **0 error**
 - [ ] 输入非法字符时,错误提示立即显示
 - [ ] 提交成功后,表单被清空
 - [ ] 密码强度指示器正确反映密码复杂度

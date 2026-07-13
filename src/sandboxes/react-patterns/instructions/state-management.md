@@ -1,6 +1,6 @@
 # 🎯 任务:React 状态管理实战
 
-> 靶场文件:`src/sandboxes/StateManagerSandbox.jsx`
+> 靶场文件:`src/sandboxes/react-patterns/StateManagerSandbox.jsx`
 > 预计耗时:20 ~ 30 分钟 · 难度:⭐⭐☆
 
 ## 背景
@@ -34,7 +34,7 @@
 
 ## 完成判据
 
-- [ ] `npx eslint --no-ignore src/sandboxes/StateManagerSandbox.jsx` **0 error**
+- [ ] `npx eslint --no-ignore src/sandboxes/react-patterns/StateManagerSandbox.jsx` **0 error**
 - [ ] 添加新任务后,列表立即更新(说明 state 正确)
 - [ ] 切换 filter 时,已完成/未完成状态不丢失
 - [ ] 删除任务后,列表正确更新

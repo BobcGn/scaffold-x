@@ -1,6 +1,6 @@
 # 🎯 任务:JSON 序列化策略实战
 
-> 靶场文件:`src/sandboxes/JSONSerializationSandbox.jsx`
+> 靶场文件:`src/sandboxes/data-processing/JSONSerializationSandbox.jsx`
 > 预计耗时:15 ~ 30 分钟 · 难度:⭐⭐☆
 
 ## 背景
@@ -17,7 +17,7 @@ iOS 上崩溃"的诡异现象。
 ## 任务清单(请按顺序完成)
 
 - [ ] **任务 1:删除未使用的 import / 变量**
-  - 打开 `src/sandboxes/JSONSerializationSandbox.jsx`
+  - 打开 `src/sandboxes/data-processing/JSONSerializationSandbox.jsx`
   - 找到 `unusedLogger` 等声明但未使用的变量
   - 删除或真正使用它们
 
@@ -43,7 +43,7 @@ iOS 上崩溃"的诡异现象。
 
 ## 完成判据
 
-- [ ] `npx eslint src/sandboxes/JSONSerializationSandbox.jsx` **0 error**
+- [ ] `npx eslint src/sandboxes/data-processing/JSONSerializationSandbox.jsx` **0 error**
 - [ ] 浏览器里修改输入框内容 → 结果区**实时更新**(说明 `useEffect` 依赖已修)
 - [ ] 点击「注入坏数据」→ 结果区显示 `反序列化失败:缺少必填字段 id`
 

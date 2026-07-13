@@ -1,6 +1,6 @@
 # 🎯 任务:异步数据处理实战
 
-> 靶场文件:`src/sandboxes/AsyncDataSandbox.jsx`
+> 靶场文件:`src/sandboxes/data-processing/AsyncDataSandbox.jsx`
 > 预计耗时:20 ~ 30 分钟 · 难度:⭐⭐☆
 
 ## 背景
@@ -36,7 +36,7 @@
 
 ## 完成判据
 
-- [ ] `npx eslint --no-ignore src/sandboxes/AsyncDataSandbox.jsx` **0 error**
+- [ ] `npx eslint --no-ignore src/sandboxes/data-processing/AsyncDataSandbox.jsx` **0 error**
 - [ ] 快速切换用户详情时,不会显示旧用户的错误
 - [ ] 组件卸载后,控制台无 "Can't perform a React state update" 警告
 - [ ] 快速点击"刷新"时,不会出现列表闪烁
